@@ -12,19 +12,26 @@ export default function GlobalCss(): JSX.Element {
     <GlobalStyles
       styles={{
         "html, body": {
-          boxSizing: "border-box",
           margin: 0,
           padding: 0,
-          height: "100%",
-          width: "100%",
-
+        },
+        "#root": {
+          boxSizing: "border-box",
+          maxHeight: "100%",
+          maxWidth: "100%",
+          width: "100vw",
+          left: "50%",
+          marginLeft: "-50vw",
+          height: "100vh",
           // https://github.com/necolas/normalize.css/blob/master/normalize.css#L12
           lineHeight: 1.15,
-        },
-        "*, *:before, *:after": {
-          boxSizing: "inherit",
-        },
-        body: {
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          flex: "1 1 100%",
+          outline: "none",
+          overflow: "hidden",
+          zIndex: 0,
           background: theme.palette.background.default,
           color: theme.palette.text.primary,
           font: "inherit",
@@ -37,17 +44,6 @@ export default function GlobalCss(): JSX.Element {
           // scrollable elements to be scrolled without the whole page moving (even if they don't
           // preventDefault on scroll events).
           overscrollBehavior: "none",
-        },
-        "#root": {
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          position: "relative",
-          flex: "1 1 100%",
-          outline: "none",
-          overflow: "hidden",
-          zIndex: 0,
         },
       }}
     />
