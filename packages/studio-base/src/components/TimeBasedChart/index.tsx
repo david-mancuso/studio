@@ -58,6 +58,7 @@ export type TimeBasedChartTooltipData = {
   path: string;
   value: number | bigint | boolean | string;
   constantName?: string;
+  color?: string;
 };
 
 const useStyles = makeStyles()((theme) => ({

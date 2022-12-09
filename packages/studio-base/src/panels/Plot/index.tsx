@@ -448,7 +448,7 @@ function Plot(props: Props) {
     const allTooltips: TimeBasedChartTooltipData[] = [];
     for (const dataset of datasets) {
       for (const datum of dataset.data) {
-        allTooltips.push(datum);
+        allTooltips.push({ ...datum, color: dataset.borderColor?.toString() });
       }
     }
     return allTooltips;

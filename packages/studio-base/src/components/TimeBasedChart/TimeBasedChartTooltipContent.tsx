@@ -12,7 +12,7 @@
 //   You may not use this file except in compliance with the License.
 
 import { take } from "lodash";
-import { PropsWithChildren, useMemo } from "react";
+import { CSSProperties, PropsWithChildren, useMemo } from "react";
 import { makeStyles } from "tss-react/mui";
 
 import { fonts } from "@foxglove/studio-base/util/sharedStyleConstants";
@@ -84,6 +84,7 @@ export default function TimeBasedChartTooltipContent(
     return (
       <div className={classes.root} data-testid="TimeBasedChartTooltipContent">
         {take(content, 1).map((item, idx) => {
+          const style: CSSProperties = { color: item.color };
           const value =
             typeof item.value === "string"
               ? item.value
@@ -91,7 +92,7 @@ export default function TimeBasedChartTooltipContent(
               ? item.value.toString()
               : JSON.stringify(item.value);
           return (
-            <div key={idx}>
+            <div key={idx} style={style}>
               {value}
               {item.constantName != undefined ? ` (${item.constantName})` : ""}
             </div>
@@ -109,6 +110,7 @@ export default function TimeBasedChartTooltipContent(
           <div key={idx}>
             <div className={classes.path}>{path}</div>
             {take(items, 1).map((item, itemIdx) => {
+              const style: CSSProperties = { color: item.color };
               const value =
                 typeof item.value === "string"
                   ? item.value
@@ -116,7 +118,7 @@ export default function TimeBasedChartTooltipContent(
                   ? item.value.toString()
                   : JSON.stringify(item.value);
               return (
-                <div key={itemIdx}>
+                <div key={itemIdx} style={style}>
                   {value}
                   {item.constantName != undefined ? ` (${item.constantName})` : ""}
                 </div>
