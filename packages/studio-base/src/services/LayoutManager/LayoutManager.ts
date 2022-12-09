@@ -133,8 +133,6 @@ export default class LayoutManager implements ILayoutManager {
           ? LayoutManager.REMOTE_STORAGE_NAMESPACE_PREFIX + remote.namespace
           : LayoutManager.LOCAL_STORAGE_NAMESPACE,
         {
-          migrateUnnamespacedLayouts: true,
-
           // Convert existing local layouts into cloud personal layouts
           importFromNamespace: remote ? LayoutManager.LOCAL_STORAGE_NAMESPACE : undefined,
         },

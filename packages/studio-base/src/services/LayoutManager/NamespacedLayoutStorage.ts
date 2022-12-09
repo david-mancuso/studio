@@ -11,47 +11,41 @@ const log = Logger.getLogger(__filename);
  * A wrapper around ILayoutStorage for a particular namespace.
  */
 export class NamespacedLayoutStorage {
-  private migration: Promise<void>;
+  private fromNamespace: string | undefined;
   public constructor(
     private storage: ILayoutStorage,
     private namespace: string,
-    {
-      migrateUnnamespacedLayouts,
-      importFromNamespace,
-    }: { migrateUnnamespacedLayouts: boolean; importFromNamespace: string | undefined },
+    { importFromNamespace }: { importFromNamespace: string | undefined },
   ) {
-    this.migration = (async function () {
-      if (migrateUnnamespacedLayouts) {
-        await storage
-          .migrateUnnamespacedLayouts?.(namespace)
-          .catch((error) => log.error("Migration failed:", error));
-      }
+    this.fromNamespace = importFromNamespace;
+  }
 
-      if (importFromNamespace != undefined) {
-        await storage
-          .importLayouts({
-            fromNamespace: importFromNamespace,
-            toNamespace: namespace,
-          })
-          .catch((error) => log.error("Import failed:", error));
-      }
-    })();
+  public async migrate(): Promise<void> {
+    await this.storage
+      .migrateUnnamespacedLayouts?.(this.namespace)
+      .catch((error) => log.error("Migration failed:", error));
+
+    if (this.fromNamespace != undefined) {
+      await this.storage
+        .importLayouts({ fromNamespace: this.fromNamespace, toNamespace: this.namespace })
+        .catch((error) => log.error("Import failed:", error));
+    }
   }
 
   public async list(): Promise<readonly Layout[]> {
-    await this.migration;
+    await this.migrate();
     return await this.storage.list(this.namespace);
   }
   public async get(id: LayoutID): Promise<Layout | undefined> {
-    await this.migration;
+    await this.migrate();
     return await this.storage.get(this.namespace, id);
   }
   public async put(layout: Layout): Promise<Layout> {
-    await this.migration;
+    await this.migrate();
     return await this.storage.put(this.namespace, layout);
   }
   public async delete(id: LayoutID): Promise<void> {
-    await this.migration;
+    await this.migrate();
     await this.storage.delete(this.namespace, id);
   }
 }
